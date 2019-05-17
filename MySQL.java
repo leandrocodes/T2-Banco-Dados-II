@@ -13,7 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 
-public class BancoDeDados {
+public class MySQL {
     private static String status;
 
     public Connection connect(String serverName, String mydatabase, String username, String password) throws SQLException{
@@ -42,12 +42,40 @@ public class BancoDeDados {
         return connection;
     }
     
-    public void create_table(Connection connector, String table){
+    public void create_tables(Connection con){
         Statement stnt;
         try{
-            stnt = (Statement) connector.createStatement();
-            stnt.execute(table);
-            System.out.println("Tabela criada com sucesso!\n");
+            stnt = (Statement) con.createStatement();
+            stnt.execute("CREATE TABLE IF NOT EXISTS VENDEDOR(\n" +
+            "	IDVENDEDOR INT PRIMARY KEY AUTO_INCREMENT,\n" +
+            "	NOME VARCHAR(30) NOT NULL,\n" +
+            "	SEXO ENUM('M','F') NOT NULL,\n" +
+            "	EMAIL VARCHAR(50) UNIQUE,\n" +
+            "	CPF VARCHAR(15) UNIQUE,\n" +
+            "	JANEIRO FLOAT(10,2) NOT NULL,\n" +
+            "	FEVEREIRO FLOAT(10,2) NOT NULL,\n" +
+            "	MARCO FLOAT(10,2) NOT NULL\n" +
+            ")");
+            
+        stnt.execute("CREATE TABLE IF NOT EXISTS TELEFONE(\n" +
+            "	IDTELEFONE INT PRIMARY KEY AUTO_INCREMENT,\n" +
+            "	TIPO ENUM('COM','RES','CEL'),\n" +
+            "	NUMERO VARCHAR(10),\n" +
+            "	ID_VENDEDOR INT,\n" +
+            "	FOREIGN KEY(ID_VENDEDOR) REFERENCES VENDEDOR(IDVENDEDOR)\n" +
+            ")");
+        
+        stnt.execute("CREATE TABLE IF NOT EXISTS ENDERECO(\n" +
+            "	IDENDERECO INT PRIMARY KEY AUTO_INCREMENT,\n" +
+            "	RUA VARCHAR(30) NOT NULL,\n" +
+            "	BAIRRO VARCHAR(30) NOT NULL,\n" +
+            "	CIDADE VARCHAR(30) NOT NULL,\n" +
+            "	ESTADO CHAR(2) NOT NULL,\n" +
+            "	ID_VENDEDOR INT UNIQUE,\n" +
+            "	FOREIGN KEY(ID_VENDEDOR) REFERENCES VENDEDOR(IDVENDEDOR)\n" +
+            ")");     
+        
+            System.out.println("Tabelas criadas com sucesso!\n");
             stnt.close();
         }
         catch(SQLException err){
@@ -57,10 +85,10 @@ public class BancoDeDados {
         }
     }
     
-    public void delete_table(Connection connector, String table){
+    public void delete_table(Connection con, String table){
         Statement stnt;
         try{
-            stnt = (Statement) connector.createStatement();
+            stnt = (Statement) con.createStatement();
             stnt.execute("DROP TABLE "+table);
             System.out.println("Tabela deletada com sucesso!\n");
             stnt.close();
@@ -72,13 +100,13 @@ public class BancoDeDados {
         }
     }    
     
-    public void insert(Connection connector, Vendedor vend) throws SQLException{
+    public void insert(Connection con, Vendedor vend) throws SQLException{
         
         String sql = "insert into "
                 + "VENDEDOR(IDVENDEDOR,NOME,SEXO,EMAIL,CPF,JANEIRO,FEVEREIRO,MARCO)"
                 + " values(?,?,?,?,?,?,?,?)";
 //        String.format("%s %s", "oi","dani");
-        PreparedStatement stmt = connector.prepareStatement(sql);
+        PreparedStatement stmt = con.prepareStatement(sql);
     
         //inserir dados
         stmt.setString(1, vend.id);
@@ -96,8 +124,8 @@ public class BancoDeDados {
         System.out.println("\nDados gravados com sucesso!\n");
     }
     
-    public void query(Connection connector, String query) throws SQLException{
-        PreparedStatement stmt = connector.prepareStatement(query);
+    public void query(Connection con, String query) throws SQLException{
+        PreparedStatement stmt = con.prepareStatement(query);
         //EXECUTA UM SELECT
         
         ResultSet rs = stmt.executeQuery();
@@ -125,8 +153,8 @@ public class BancoDeDados {
         stmt.close();
     }
 
-    public void show_tables(Connection connector) throws SQLException{
-        DatabaseMetaData meta = connector.getMetaData();
+    public void show_tables(Connection con) throws SQLException{
+        DatabaseMetaData meta = con.getMetaData();
         ResultSet rs1 = meta.getTables(null, null, null,new String[] {"TABLE"});
 //        ResultSet rs2 = meta.getTables(null, null,"%", null);
         System.out.println("Tabelas existentes no banco de dados");
@@ -139,7 +167,7 @@ public class BancoDeDados {
 //        }
     }
     
-    public void close_connection(Connection connector) throws SQLException{
-        connector.close();
+    public void close_connection(Connection con) throws SQLException{
+        con.close();
     }
 }

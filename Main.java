@@ -6,17 +6,18 @@ import java.lang.*;
 
 public class Main {
     public static void main(String[] args) throws SQLException{
-            BancoDeDados database = new BancoDeDados();
+            MySQL database = new MySQL();
             Scanner input = new Scanner(System.in);
             Vendedor vend = new Vendedor();
-            Connection connector = null;
 
             String serverName = "localhost";
             String mydatabase = "T2_BDII";
             String username = "daniel";
             String password = "123456789";
             
-            connector = database.connect(serverName, mydatabase, username, password);
+            Connection con = database.connect(serverName, mydatabase, username, password);
+            
+            database.create_tables(con);
             
             while(true){
                 System.out.println("Escolha a opção desejada");
@@ -27,7 +28,7 @@ public class Main {
                     case 1:
                         input.nextLine();
                         System.out.println("Entre com os seguintes dados");
-                    
+                        
                         vend.setId(null);
                         System.out.print("Nome: ");vend.setNome(input.nextLine());
                         System.out.print("Sexo: ");vend.setSexo(input.nextLine());
@@ -36,17 +37,17 @@ public class Main {
                         System.out.print("Janeiro: ");vend.setJaneiro(input.nextLine());
                         System.out.print("Fevereiro: ");vend.setFevereiro(input.nextLine());
                         System.out.print("Março: ");vend.setMarco(input.nextLine());
-                        database.insert(connector, vend);
+                        database.insert(con, vend);
                         break;
                     case 2:
                         input.nextLine();
-                        database.show_tables(connector);
+                        database.show_tables(con);
                         System.out.println("Digite a consulta que deseja realizar:");
-                        database.query(connector, input.nextLine());
+                        database.query(con, input.nextLine());
                         break;
                     case 3:
                         input.close();
-                        database.close_connection(connector);
+                        database.close_connection(con);
                         System.exit(0);
                     default:
                         break;

@@ -1,7 +1,7 @@
 package T2_BDII;
 
 public class Vendedor {
-    public String id;
+    public String idvendedor;
     public String nome;
     public String sexo;
     public String email;
@@ -14,9 +14,9 @@ public class Vendedor {
         
     }
     
-    public Vendedor(String id, String nome, String sexo, String email, String cpf,
+    public Vendedor(String idvendedor, String nome, String sexo, String email, String cpf,
             String janeiro, String fevereiro, String marco){
-        this.id = id;
+        this.idvendedor = idvendedor;
         this.nome = nome;
         this.sexo = sexo;
         this.email = email;
@@ -27,11 +27,11 @@ public class Vendedor {
     }
 
     public String getId() {
-        return id;
+        return idvendedor;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setId(String idvendedor) {
+        this.idvendedor = idvendedor;
     }
 
     public String getNome() {
