@@ -45,7 +45,7 @@ public class BancoDeDados {
         Statement stnt;
         try{
         stnt = (Statement) connector.createStatement();
-        String criaTabela = "    CREATE TABLE "+name+"(\n" +
+        String criaTabela = "    CREATE TABLE VENDEDOR(\n" +
                                 "   IDVENDEDOR INT PRIMARY KEY AUTO_INCREMENT, \n" +
                                 "   NOME VARCHAR(30) NOT NULL, \n" +
                                 "   SEXO ENUM('M','F') NOT NULL, \n" +
