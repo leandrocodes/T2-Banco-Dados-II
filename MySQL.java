@@ -1,12 +1,8 @@
 package T2_BDII;
 
-//import com.mysql.jdbc.DatabaseMetaData;
-import java.io.IOException;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
@@ -79,7 +75,6 @@ public class MySQL {
         catch(SQLException err){
             System.out.println("Erro ao criar tabela!");
             System.out.println(err+"\n");
-//            Logger.getLogger(Main.class.getName()).log(Level.SEVERE,null,err);
         }
     }
     
@@ -94,7 +89,6 @@ public class MySQL {
         catch(SQLException err){
             System.out.println("Erro ao deletar tabela!");
             System.out.println(err+"\n");
-//            Logger.getLogger(Main.class.getName()).log(Level.SEVERE,null,err);
         }
     }    
     
@@ -105,7 +99,6 @@ public class MySQL {
                 + " values(?,?,?,?,?,?,?,?)";
         PreparedStatement stmt = con.prepareStatement(sql);
     
-        //inserir dados
         stmt.setString(1, vend.idvendedor);
         stmt.setString(2, vend.nome);
         stmt.setString(3, vend.sexo);
