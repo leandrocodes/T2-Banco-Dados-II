@@ -25,43 +25,52 @@ public class BancoDeDados {
             connection = DriverManager.getConnection(url, username, password);
             
             if(connection != null){
-                status = "STATUS ----> conectado com sucesso";
+                status = "STATUS ----> Conectado com sucesso";
             }else{
-                status = "STATUS ----> não foi possivel realizar conexão";
+                status = "STATUS ----> Não foi possivel realizar conexão";
             }
-            
             System.out.println(status);
         }
-        catch (ClassNotFoundException e){
+        catch (ClassNotFoundException err){
             System.out.println("O driver expecificado não foi encontrado");
+            System.out.println(err+"\n");
         }
-        catch (SQLException e){
+        catch (SQLException err){
             System.out.println("Não foi possivel conectar ao Banco de Dados");
+            System.out.println(err+"\n");
         }
         return connection;
     }
     
-    public void create_table(Connection connector, String name) throws SQLException{
+    public void create_table(Connection connector, String table){
         Statement stnt;
         try{
-        stnt = (Statement) connector.createStatement();
-        String criaTabela = "    CREATE TABLE VENDEDOR(\n" +
-                                "   IDVENDEDOR INT PRIMARY KEY AUTO_INCREMENT, \n" +
-                                "   NOME VARCHAR(30) NOT NULL, \n" +
-                                "   SEXO ENUM('M','F') NOT NULL, \n" +
-                                "   EMAIL VARCHAR(50) UNIQUE, \n"+
-                                "   CPF VARCHAR(15) UNIQUE,\n" +
-                                "   JANEIRO FLOAT(10,2) NOT NULL,\n" +
-                                "   FEVEREIRO FLOAT(10,2) NOT NULL,\n" +
-                                "   MARCO FLOAT(10,2) NOT NULL\n" +
-                                ");";
-        stnt.execute(criaTabela);
-        stnt.close();
+            stnt = (Statement) connector.createStatement();
+            stnt.execute(table);
+            System.out.println("Tabela criada com sucesso!\n");
+            stnt.close();
         }
-        catch (SQLException ex){
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE,null,ex);
+        catch(SQLException err){
+            System.out.println("Erro ao criar tabela!");
+            System.out.println(err+"\n");
+//            Logger.getLogger(Main.class.getName()).log(Level.SEVERE,null,err);
         }
     }
+    
+    public void delete_table(Connection connector, String table){
+        Statement stnt;
+        try{
+            stnt = (Statement) connector.createStatement();
+            stnt.execute("DROP TABLE IF EXISTS "+table);
+            System.out.println("Tabela deletada com sucesso!\n");
+            stnt.close();
+        }
+        catch(SQLException err){
+            System.out.println("Erro ao deletar tabela!");
+            System.out.println(err+"\n");
+//            Logger.getLogger(Main.class.getName()).log(Level.SEVERE,null,err);
+        }
+    }    
     
     public void insert(Connection connector, Vendedor vend) throws SQLException{
         
@@ -120,7 +129,7 @@ public class BancoDeDados {
         DatabaseMetaData meta = connector.getMetaData();
         ResultSet rs1 = meta.getTables(null, null, null,new String[] {"TABLE"});
 //        ResultSet rs2 = meta.getTables(null, null,"%", null);
-        System.out.println("One way of Listing Tables");
+        System.out.println("Tabelas existentes no banco de dados");
         while (rs1.next()){
             System.out.println(rs1.getString("TABLE_NAME"));
         }
