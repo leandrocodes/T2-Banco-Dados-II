@@ -24,11 +24,9 @@ public class MySQL {
             String url = "jdbc:mysql://" + serverName + ":3306/" + mydatabase;
             connection = DriverManager.getConnection(url, username, password);
             
-            if(connection != null){
-                status = "STATUS ----> Conectado com sucesso";
-            }else{
-                status = "STATUS ----> Não foi possivel realizar conexão";
-            }
+            if(connection != null) status = "Conectado com sucesso!";
+            else status = "Não foi possivel realizar conexão!";
+            
             System.out.println(status);
         }
         catch (ClassNotFoundException err){
@@ -100,16 +98,15 @@ public class MySQL {
         }
     }    
     
-    public void insert(Connection con, Vendedor vend) throws SQLException{
+    public void insert_vend(Connection con, Vendedor vend) throws SQLException{
         
         String sql = "insert into "
                 + "VENDEDOR(IDVENDEDOR,NOME,SEXO,EMAIL,CPF,JANEIRO,FEVEREIRO,MARCO)"
                 + " values(?,?,?,?,?,?,?,?)";
-//        String.format("%s %s", "oi","dani");
         PreparedStatement stmt = con.prepareStatement(sql);
     
         //inserir dados
-        stmt.setString(1, vend.id);
+        stmt.setString(1, vend.idvendedor);
         stmt.setString(2, vend.nome);
         stmt.setString(3, vend.sexo);
         stmt.setString(4, vend.email);
@@ -118,29 +115,85 @@ public class MySQL {
         stmt.setString(7, vend.fevereiro);     
         stmt.setString(8, vend.marco);  
         
-        //executar
-        stmt.execute();
+        try{
+            stmt.execute();
+            System.out.println("\nDados gravados com sucesso!\n");
+        }
+        catch(SQLException err){
+            System.out.println("Erro ao inserir dado!");
+            System.out.println(err);
+            System.out.println();
+        }
         stmt.close();
-        System.out.println("\nDados gravados com sucesso!\n");
     }
     
-    public void query(Connection con, String query) throws SQLException{
+    public void insert_tel(Connection con, Telefone tel) throws SQLException{
+        
+        String sql = "insert into "
+                + "TELEFONE(IDTELEFONE,TIPO,NUMERO,ID_VENDEDOR)"
+                + " values(?,?,?,?)";
+        PreparedStatement stmt = con.prepareStatement(sql);
+    
+        stmt.setString(1, tel.idtelefone);
+        stmt.setString(2, tel.tipo);
+        stmt.setString(3, tel.numero);
+        stmt.setString(4, tel.id_vendedor);
+        
+        try{
+            stmt.execute();
+            System.out.println("\nDados gravados com sucesso!\n");
+        }
+        catch(SQLException err){
+            System.out.println("Erro ao inserir dado!");
+            System.out.println(err);
+            System.out.println();
+        }
+        stmt.close();
+    }
+    
+    public void insert_end(Connection con, Endereco end) throws SQLException{
+        
+        String sql = "insert into "
+                + "ENDERECO(IDENDERECO,RUA,BAIRRO,CIDADE,ESTADO,ID_VENDEDOR)"
+                + " values(?,?,?,?,?,?)";
+        PreparedStatement stmt = con.prepareStatement(sql);
+    
+        stmt.setString(1, end.idendereco);
+        stmt.setString(2, end.rua);
+        stmt.setString(3, end.bairro);
+        stmt.setString(4, end.cidade);
+        stmt.setString(5, end.estado);
+        stmt.setString(6, end.id_vendedor); 
+        
+        try{
+            stmt.execute();
+            System.out.println("\nDados gravados com sucesso!\n");
+        }
+        catch(SQLException err){
+            System.out.println("Erro ao inserir dado!");
+            System.out.println(err);
+            System.out.println();
+        }
+        stmt.close();
+    }    
+    
+    public void query(Connection con, String table, String query) throws SQLException{
         PreparedStatement stmt = con.prepareStatement(query);
-        //EXECUTA UM SELECT
         
         ResultSet rs = stmt.executeQuery();
         System.out.println();
-        while (rs.next()){
-            String id = rs.getString("IDVENDEDOR");
-            String nome = rs.getString("NOME");
-            String sexo = rs.getString("SEXO");
-            String email = rs.getString("EMAIL");
-            String cpf = rs.getString("CPF");
-            String janeiro = rs.getString("JANEIRO");  
-            String fevereiro = rs.getString("FEVEREIRO");
-            String marco = rs.getString("MARCO");   
-            System.out.println(
-                    "ID: "+id+"\n"
+        if(table.equals("VENDEDOR")){
+            while (rs.next()){
+                String idvendedor = rs.getString("IDVENDEDOR");
+                String nome = rs.getString("NOME");
+                String sexo = rs.getString("SEXO");
+                String email = rs.getString("EMAIL");
+                String cpf = rs.getString("CPF");
+                String janeiro = rs.getString("JANEIRO");  
+                String fevereiro = rs.getString("FEVEREIRO");
+                String marco = rs.getString("MARCO");   
+                System.out.println(
+                    "ID: "+idvendedor+"\n"
                     + "Nome: "+nome+"\n"
                     +"Sexo: "+sexo+"\n"
                     +"Email: " +email+"\n"
@@ -148,23 +201,50 @@ public class MySQL {
                     +"Janeiro: "+janeiro+"\n"
                     +"Fevereiro: "+fevereiro+"\n"
                     +"Março: "+marco);
-            System.out.println();
+            }          
         }
+        else if(table.equals("TELEFONE")){
+            while (rs.next()){
+                String idtelefone = rs.getString("IDTELEFONE");
+                String tipo = rs.getString("TIPO");
+                String numero = rs.getString("NUMERO");
+                String id_vendedor = rs.getString("ID_VENDEDOR");  
+                System.out.println(
+                    "ID: "+idtelefone+"\n"
+                    + "Tipo: "+tipo+"\n"
+                    +"Número: "+numero+"\n"
+                    +"ID do Vendedor: " +id_vendedor);
+            }             
+        }
+        else if(table.equals("ENDERECO")){
+            while (rs.next()){
+                String idendereco = rs.getString("IDENDERECO");
+                String rua = rs.getString("RUA");
+                String bairro = rs.getString("BAIRRO");
+                String cidade = rs.getString("CIDADE");
+                String estado = rs.getString("ESTADO");
+                String id_vendedor = rs.getString("ID_VENDEDOR");  
+                System.out.println(
+                    "ID: "+idendereco+"\n"
+                    + "Rua: "+rua+"\n"
+                    +"Bairro: "+bairro+"\n"
+                    + "Cidade: "+cidade+"\n"
+                    + "Estado: "+estado+"\n"        
+                    +"ID do Vendedor: " +id_vendedor);
+            }            
+        }
+        System.out.println();
         stmt.close();
     }
 
     public void show_tables(Connection con) throws SQLException{
         DatabaseMetaData meta = con.getMetaData();
         ResultSet rs1 = meta.getTables(null, null, null,new String[] {"TABLE"});
-//        ResultSet rs2 = meta.getTables(null, null,"%", null);
-        System.out.println("Tabelas existentes no banco de dados");
+        System.out.println("\nTabelas existentes no banco de dados");
         while (rs1.next()){
             System.out.println(rs1.getString("TABLE_NAME"));
         }
-//        System.out.println("Another way of Listing Tables");
-//        while(rs2.next()){
-//            System.out.println(rs2.getString(3));                
-//        }
+        System.out.println();
     }
     
     public void close_connection(Connection con) throws SQLException{
