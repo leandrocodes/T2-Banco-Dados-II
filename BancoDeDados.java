@@ -61,7 +61,7 @@ public class BancoDeDados {
         Statement stnt;
         try{
             stnt = (Statement) connector.createStatement();
-            stnt.execute("DROP TABLE IF EXISTS "+table);
+            stnt.execute("DROP TABLE "+table);
             System.out.println("Tabela deletada com sucesso!\n");
             stnt.close();
         }
