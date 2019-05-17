@@ -12,7 +12,7 @@ public class Main {
         Scanner input = new Scanner(System.in);
 
         String serverName = "localhost";
-        String mydatabase = "T2_BDIII";
+        String mydatabase = "T2_BDII";
         String username = "daniel";
         String password = "123456789";
         
@@ -24,7 +24,8 @@ public class Main {
                 System.out.println("Escolha a opção desejada");
                 System.out.println("(1) Inserir Dados");
                 System.out.println("(2) Realizar Consultas");
-                System.out.println("(3) Sair");
+                System.out.println("(3) Deletar Tabelas");
+                System.out.println("(4) Sair");
                 switch (input.nextInt()) {
                     case 1:
                         input.nextLine();
@@ -53,6 +54,12 @@ public class Main {
                         database.query(con, table, query);
                         break;
                     case 3:
+                        input.nextLine();
+                        database.show_tables(con);
+                        System.out.println("Entre com a tabela que você deseja deletar");
+                        database.delete_table(con, input.nextLine());
+                        break;
+                    case 4:
                         input.close();
                         database.close_connection(con);
                         System.exit(0);
@@ -63,11 +70,11 @@ public class Main {
         }
         catch(SQLException err){
             System.out.println(err);
-            System.exit(-1);
+            System.exit(0);
         }
         catch(NullPointerException err){
             System.out.println(err);
-            System.exit(-1);
+            System.exit(0);
         }
     }
 }
