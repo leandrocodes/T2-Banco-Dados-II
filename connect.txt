@@ -1,0 +1,4 @@
+String serverName = "remotemysql.com";
+String mydatabase = "vsOSJjA3bF";
+String username = "vsOSJjA3bF";
+String password = "Z4qGUTiTxK";  
