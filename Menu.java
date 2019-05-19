@@ -33,6 +33,15 @@ public class Menu {
         f.setBounds(150,200,200,150);
         f.setVisible(true);      	
     }    
+
+class FuncBot implements ActionListener{
+    public void actionPerformed (ActionEvent e){
+        if (e.getSource()==insert_data) new CadastraFuncionario();
+        if (e.getSource()==query) new ConsultaFuncionario();
+        if (e.getSource()==delete) new ConsultaFuncionario();        
+        if (e.getSource()==quit) System.exit(0);                	
+    }
+}    
     
     public static void menu(MySQL database, String serverName, String mydatabase,
             String username, String password){
