@@ -4,7 +4,9 @@
  * and open the template in the editor.
  */
 package T2_BDII;
-
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -14,6 +16,24 @@ import java.util.Scanner;
  * @author daniel
  */
 public class Menu {
+    JFrame f=new JFrame("Menu de Opções");
+    JButton insert_data = new JButton ("Inserir Dados");
+    JButton query = new JButton ("Realizar Consultas");
+    JButton delete = new JButton ("Deletar Tabelas");
+    JButton quit = new JButton ("Sair");  
+	    
+    Menu(){
+        Container c= f.getContentPane();
+        c.setLayout(new GridLayout(4,1));
+        c.add(insert_data);
+        c.add(query);
+        c.add(delete);
+        c.add(quit);
+        f.setSize(200,150);
+        f.setBounds(150,200,200,150);
+        f.setVisible(true);      	
+    }    
+    
     public static void menu(MySQL database, String serverName, String mydatabase,
             String username, String password){
         
@@ -79,5 +99,9 @@ public class Menu {
             System.out.println(err);
             System.exit(0);
         }        
+    }
+    
+    public static void main(String[] args) {
+        new Menu();
     }
 }
