@@ -16,12 +16,7 @@ public class Main {
         String password = "123456789";
         
         Connection con = database.connect(serverName, mydatabase, username, password);
-        new Menu(database, con, serverName, mydatabase, username, password);
-
-//        String serverName = "remotemysql.com";
-//        String mydatabase = "vsOSJjA3bF";
-//        String username = "vsOSJjA3bF";
-//        String password = "Z4qGUTiTxK";          
+        new Menu(database, con, serverName, mydatabase, username, password);       
         
     }
 }

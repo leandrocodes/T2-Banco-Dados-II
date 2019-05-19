@@ -30,13 +30,13 @@ public class Insert {
 //        input.nextLine();
         System.out.println("Entre com os seguintes dados");
         System.out.print("Nome: ");vend.setNome(input.nextLine());
-        System.out.print("Sexo: ");vend.setSexo(input.nextLine());
+        System.out.print("Sexo (M ou F): ");vend.setSexo(input.nextLine());
         System.out.print("Email: ");vend.setEmail(input.nextLine());
         System.out.print("CPF: ");vend.setCpf(input.nextLine());
         System.out.print("Janeiro: ");vend.setJaneiro(input.nextLine());
         System.out.print("Fevereiro: ");vend.setFevereiro(input.nextLine());
         System.out.print("Março: ");vend.setMarco(input.nextLine());       
-        
+        System.out.println();
         return vend;
     }
     

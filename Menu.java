@@ -15,21 +15,10 @@ import java.util.Scanner;
  */
 public class Menu {
     Menu(MySQL database, Connection con, String serverName, String mydatabase,
-            String username, String password){
-        Scanner input = new Scanner(System.in);
-        
-        try{
-            database.create_tables(con);
-            Menu.options(database, con, serverName, mydatabase, username, password);
-        }
-        catch(SQLException err){
-            System.out.println(err);
-            System.exit(0);
-        }
-        catch(NullPointerException err){
-            System.out.println(err);
-            System.exit(0);
-        }        
+            String username, String password) throws SQLException{
+        Scanner input = new Scanner(System.in);  
+        database.create_tables(con);
+        Menu.options(database, con, serverName, mydatabase, username, password);       
     }
     
     static void options(MySQL database,Connection con, String serverName, String mydatabase,
@@ -68,8 +57,9 @@ public class Menu {
                     database.show_tables(con);
                     System.out.println("Digite a tabela na qual você que deseja realizar uma consulta:");
                     String table = input.nextLine();
-                    System.out.println("Entre com a query");
+                    System.out.print("Entre com a consulta: ");
                     String query = input.nextLine();
+                    System.out.println();
                     database.query(con, table, query);
                     break;
                 case 3:

@@ -18,21 +18,18 @@ public class MySQL {
             String driverName = "com.mysql.jdbc.Driver";
             Class.forName(driverName);
             String url = "jdbc:mysql://" + serverName + ":3306/" + mydatabase;
-            connection = DriverManager.getConnection(url, username, password);
-            
-            if(connection != null) status = "Conectado com sucesso!";
-            else status = "Não foi possivel realizar conexão!";
-            
+            connection = DriverManager.getConnection(url, username, password); 
+            status = (connection != null) ? "Conectado com sucesso!" : "Não foi possivel realizar conexão!";
             System.out.println(status);
         }
         catch (ClassNotFoundException err){
             System.out.println("O driver expecificado não foi encontrado!");
-            System.out.println(err+"\n");
+            System.out.println(err.getMessage()+"\n");
             System.exit(0);            
         }
         catch (SQLException err){
             System.out.println("Não foi possivel conectar ao Banco de Dados!");
-            System.out.println(err+"\n");
+            System.out.println(err.getMessage()+"\n");
             System.exit(0);
         }
         return connection;
@@ -79,7 +76,7 @@ public class MySQL {
         }
         catch(SQLException err){
             System.out.println("Erro ao criar tabela!");
-            System.out.println(err+"\n");
+            System.out.println(err.getMessage()+"\n");
         }
     }
     
@@ -93,7 +90,7 @@ public class MySQL {
         }
         catch(SQLException err){
             System.out.println("Erro ao deletar tabela!");
-            System.out.println(err+"\n");
+            System.out.println(err.getMessage()+"\n");
         }
     }    
     
@@ -104,7 +101,6 @@ public class MySQL {
                 + " values(?,?,?,?,?,?,?)";
         PreparedStatement stmt = con.prepareStatement(sql);
     
-//        stmt.setString(1, String.valueOf(vend.getId()));
         stmt.setString(1, vend.getNome());
         stmt.setString(2, vend.getSexo());
         stmt.setString(3, vend.getEmail());
@@ -115,12 +111,11 @@ public class MySQL {
         
         try{
             stmt.execute();
-            System.out.println("\nDados gravados com sucesso!\n");
+            System.out.println("Dados gravados com sucesso!\n");
         }
         catch(SQLException err){
-            System.out.println("Erro ao inserir dado!");
-            System.out.println(err);
-            System.out.println();
+            System.out.println("Erro ao inserir os dados!");
+            System.out.println(err.getMessage()+'\n');
         }
         stmt.close();
     }
@@ -139,12 +134,11 @@ public class MySQL {
         
         try{
             stmt.execute();
-            System.out.println("\nDados gravados com sucesso!\n");
+            System.out.println("Dados gravados com sucesso!\n");
         }
         catch(SQLException err){
             System.out.println("Erro ao inserir dado!");
-            System.out.println(err);
-            System.out.println();
+            System.out.println(err.getMessage()+'\n');
         }
         stmt.close();
     }
@@ -165,12 +159,11 @@ public class MySQL {
         
         try{
             stmt.execute();
-            System.out.println("\nDados gravados com sucesso!\n");
+            System.out.println("Dados gravados com sucesso!\n");
         }
         catch(SQLException err){
             System.out.println("Erro ao inserir dado!");
-            System.out.println(err);
-            System.out.println();
+            System.out.println(err.getMessage()+'\n');
         }
         stmt.close();
     }    
@@ -178,62 +171,72 @@ public class MySQL {
     public void query(Connection con, String table, String query) throws SQLException{
         PreparedStatement stmt = con.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
         
-        ResultSet rs = stmt.executeQuery();
-        System.out.println();
-        if(table.equals("VENDEDOR")){
-            while (rs.next()){
-                long idvendedor = rs.getLong("IDVENDEDOR");
-                String nome = rs.getString("NOME");
-                String sexo = rs.getString("SEXO");
-                String email = rs.getString("EMAIL");
-                String cpf = rs.getString("CPF");
-                String janeiro = rs.getString("JANEIRO");  
-                String fevereiro = rs.getString("FEVEREIRO");
-                String marco = rs.getString("MARCO");   
-                System.out.println(
-                    "ID: "+idvendedor+"\n"
-                    + "Nome: "+nome+"\n"
-                    +"Sexo: "+sexo+"\n"
-                    +"Email: " +email+"\n"
-                    +"CPF: "+cpf+"\n"
-                    +"Janeiro: "+janeiro+"\n"
-                    +"Fevereiro: "+fevereiro+"\n"
-                    +"Março: "+marco);
-                System.out.println();
+        if(!(table.equals("VENDEDOR") || table.equals("ENDERECO") || table.equals("TELEFONE"))){
+            System.out.println("Por favor, entre com uma tabela existente no banco!\n"); return;
+        }
+        
+        try{   
+            ResultSet rs = stmt.executeQuery();
+            if(table.equals("VENDEDOR")){
+                while (rs.next()){
+                    long idvendedor = rs.getLong("IDVENDEDOR");
+                    String nome = rs.getString("NOME");
+                    String sexo = rs.getString("SEXO");
+                    String email = rs.getString("EMAIL");
+                    String cpf = rs.getString("CPF");
+                    String janeiro = rs.getString("JANEIRO");  
+                    String fevereiro = rs.getString("FEVEREIRO");
+                    String marco = rs.getString("MARCO");   
+                    System.out.println(
+                        "ID: "+idvendedor+"\n"
+                        + "Nome: "+nome+"\n"
+                        +"Sexo: "+sexo+"\n"
+                        +"Email: " +email+"\n"
+                        +"CPF: "+cpf+"\n"
+                        +"Janeiro: "+janeiro+"\n"
+                        +"Fevereiro: "+fevereiro+"\n"
+                        +"Março: "+marco);
+                    System.out.println();
+                }
+
             }
-            
+            else if(table.equals("TELEFONE")){
+                while (rs.next()){
+                    long idtelefone = rs.getLong("IDTELEFONE");
+                    String tipo = rs.getString("TIPO");
+                    String numero = rs.getString("NUMERO");
+                    String id_vendedor = rs.getString("ID_VENDEDOR");  
+                    System.out.println(
+                        "ID: "+idtelefone+"\n"
+                        + "Tipo: "+tipo+"\n"
+                        +"Número: "+numero+"\n"
+                        +"ID do Vendedor: " +id_vendedor);
+                    System.out.println();
+                }             
+            }
+            else if(table.equals("ENDERECO")){
+                while (rs.next()){
+                    long idendereco = rs.getLong("IDENDERECO");
+                    String rua = rs.getString("RUA");
+                    String bairro = rs.getString("BAIRRO");
+                    String cidade = rs.getString("CIDADE");
+                    String estado = rs.getString("ESTADO");
+                    String id_vendedor = rs.getString("ID_VENDEDOR");  
+                    System.out.println(
+                        "ID: "+idendereco+"\n"
+                        + "Rua: "+rua+"\n"
+                        +"Bairro: "+bairro+"\n"
+                        + "Cidade: "+cidade+"\n"
+                        + "Estado: "+estado+"\n"        
+                        +"ID do Vendedor: " +id_vendedor);
+                    System.out.println();
+                }            
+            }        
         }
-        else if(table.equals("TELEFONE")){
-            while (rs.next()){
-                long idtelefone = rs.getLong("IDTELEFONE");
-                String tipo = rs.getString("TIPO");
-                String numero = rs.getString("NUMERO");
-                String id_vendedor = rs.getString("ID_VENDEDOR");  
-                System.out.println(
-                    "ID: "+idtelefone+"\n"
-                    + "Tipo: "+tipo+"\n"
-                    +"Número: "+numero+"\n"
-                    +"ID do Vendedor: " +id_vendedor);
-            }             
+        catch(SQLException err){
+            System.out.println("Por favor, selecione a mesma tabela dita anteriormente!");
+            System.out.println(err.getMessage()+"\n");
         }
-        else if(table.equals("ENDERECO")){
-            while (rs.next()){
-                long idendereco = rs.getLong("IDENDERECO");
-                String rua = rs.getString("RUA");
-                String bairro = rs.getString("BAIRRO");
-                String cidade = rs.getString("CIDADE");
-                String estado = rs.getString("ESTADO");
-                String id_vendedor = rs.getString("ID_VENDEDOR");  
-                System.out.printf(
-                    "ID: "+idendereco+"\n"
-                    + "Rua: "+rua+"\n"
-                    +"Bairro: "+bairro+"\n"
-                    + "Cidade: "+cidade+"\n"
-                    + "Estado: "+estado+"\n"        
-                    +"ID do Vendedor: " +id_vendedor);
-            }            
-        }
-        System.out.println();
         stmt.close();
     }
 
