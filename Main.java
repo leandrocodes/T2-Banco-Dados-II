@@ -15,6 +15,11 @@ public class Main {
         String username = "daniel";
         String password = "123456789";
         
-        Menu.menu(database,serverName, mydatabase, username, password);
+//        String serverName = "remotemysql.com";
+//        String mydatabase = "vsOSJjA3bF";
+//        String username = "vsOSJjA3bF";
+//        String password = "Z4qGUTiTxK";          
+        
+        new Menu(database,serverName, mydatabase, username, password);
     }
 }
