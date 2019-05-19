@@ -18,8 +18,8 @@ public class Insert {
         System.out.println("\nx Inserir Dados");
         System.out.println("    Você deseja inserir dados em qual tabela?");
         System.out.println("    (1) Vendedor");
-        System.out.println("    (2) Telefone");
-        System.out.println("    (3) Endereco");
+        System.out.println("    (2) Endereco");
+        System.out.println("    (3) Telefone");
         return input.nextInt();
     }
     
@@ -46,9 +46,9 @@ public class Insert {
         Telefone tel = new Telefone();
         System.out.println("Entre com os seguintes dados");            
         
-        tel.setIdtelefone(null);
-        System.out.print("Tipo: ");tel.setTipo(input.nextLine());
-        System.out.print("Número: ");tel.setNumero  (input.nextLine());
+        tel.setIdtelefone(0);
+        System.out.print("Tipo ('COM','RES','CEL'): ");tel.setTipo(input.nextLine());
+        System.out.print("Número (máx. 10 caracteres): ");tel.setNumero  (input.nextLine());
         System.out.print("ID do Vendedor: ");tel.setId_vendedor(input.nextLine());
         
         return tel;
@@ -60,7 +60,7 @@ public class Insert {
         Endereco end = new Endereco();
         System.out.println("Entre com os seguintes dados");
         
-        end.setIdendereco(null);
+        end.setIdendereco(0);
         System.out.print("Rua: ");end.setRua(input.nextLine());
         System.out.print("Bairro: ");end.setBairro(input.nextLine());
         System.out.print("Cidade: ");end.setCidade(input.nextLine());

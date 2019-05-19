@@ -1,20 +1,25 @@
 package T2_BDII;
 
 public class Vendedor {
-    public String idvendedor;
-    public String nome;
-    public String sexo;
-    public String email;
-    public String cpf;
-    public String janeiro;
-    public String fevereiro;
-    public String marco;
+    private long idvendedor;
+    private String nome;
+    private String sexo;
+    private String email;
+    private String cpf;
+    private String janeiro;
+    private String fevereiro;
+    private String marco;
     
     public Vendedor(){
         
     }
+
+//    public Vendedor(String nome, String sexo, String email, String cpf,
+//            String janeiro, String fevereiro, String marco){
+//                this(null, nome, sexo, email, cpf, janeiro, fevereiro, marco);
+//    }    
     
-    public Vendedor(String idvendedor, String nome, String sexo, String email, String cpf,
+    public Vendedor(long idvendedor, String nome, String sexo, String email, String cpf,
             String janeiro, String fevereiro, String marco){
         this.idvendedor = idvendedor;
         this.nome = nome;
@@ -26,11 +31,11 @@ public class Vendedor {
         this.marco = marco;
     }
 
-    public String getId() {
+    public long getId() {
         return idvendedor;
     }
 
-    public void setId(String idvendedor) {
+    public void setId(long idvendedor) {
         this.idvendedor = idvendedor;
     }
 
